@@ -1,0 +1,43 @@
+# Local environment and secret files
+.env
+.env.*
+!.env.example
+
+# Dependencies, build output, and tool caches
+node_modules/
+dist/
+build/
+coverage/
+.cache/
+.parcel-cache/
+.vite/
+
+# Logs and temporary files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tmp
+*.temp
+*.bak
+
+# Editors and IDEs
+.vscode/
+.idea/
+.vs/
+*.suo
+*.user
+*.swp
+*.swo
+*~
+
+# Operating system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
