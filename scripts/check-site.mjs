@@ -114,6 +114,60 @@ async function checkHtmlFile(htmlFile) {
   return references.filter((reference) => !isExternalReference(reference)).length;
 }
 
+async function checkPositioningRules() {
+  const homepage = resolve(siteRoot, "index.html");
+  const html = await readFile(homepage, "utf8");
+  const title = html.match(/<title>([^<]+)<\/title>/i)?.[1].trim();
+  if (!title) {
+    errors.push("index.html: missing page title");
+  } else if (title.length > 60) {
+    errors.push(`index.html: title is ${title.length} characters; it must be 60 or fewer`);
+  }
+
+  const descriptionMatch = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i);
+  const metaDescription = descriptionMatch?.[1];
+  if (!metaDescription) {
+    errors.push("index.html: missing meta description");
+  } else if (metaDescription.length > 160) {
+    errors.push(`index.html: meta description is ${metaDescription.length} characters; it must be 160 or fewer`);
+  }
+
+  const jsonLd = html.match(/<script\s+type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/i)?.[1];
+  if (!jsonLd) {
+    errors.push("index.html: missing JSON-LD");
+  } else {
+    try {
+      JSON.parse(jsonLd);
+    } catch (error) {
+      errors.push(`index.html: invalid JSON-LD (${error.message})`);
+    }
+  }
+
+  for (const htmlFile of htmlFiles) {
+    const pageHtml = await readFile(htmlFile, "utf8");
+    const publicHtml = pageHtml
+      .replace(/<link\b[^>]*>/gi, "")
+      .replace(/\b(?:src|srcset)\s*=\s*(["'])[^"']*\1/gi, "");
+
+    if (/naisettevõt|teejuht/i.test(publicHtml)) {
+      errors.push(`${displayPath(htmlFile)}: public copy or metadata still contains retired positioning terminology`);
+    }
+    if (/\s-\s/.test(publicHtml)) {
+      errors.push(`${displayPath(htmlFile)}: visible spaced hyphen separator found; use an en dash instead`);
+    }
+    if (publicHtml.includes("—")) {
+      errors.push(`${displayPath(htmlFile)}: em dash found; public HTML uses en dashes instead`);
+    }
+  }
+
+  const firstFaq = html.match(/<div class=["']faq-list["'][^>]*>\s*<details([^>]*)>([\s\S]*?)<\/details>/i);
+  if (!firstFaq || !/Kas ma pean olema ettevõtja\?/.test(firstFaq[2])) {
+    errors.push("index.html: missing first FAQ entry for non-entrepreneurs");
+  } else if (/\bopen\b/i.test(firstFaq[1])) {
+    errors.push("index.html: first FAQ entry must be collapsed by default");
+  }
+}
+
 function checkJavaScriptFile(javaScriptFile) {
   const result = spawnSync(process.execPath, ["--check", javaScriptFile], {
     encoding: "utf8"
@@ -131,6 +185,7 @@ const javaScriptFiles = files.filter((file) => [".js", ".mjs"].includes(extname(
 const referenceCounts = await Promise.all(htmlFiles.map(checkHtmlFile));
 
 javaScriptFiles.forEach(checkJavaScriptFile);
+await checkPositioningRules();
 
 if (errors.length > 0) {
   console.error(`Smoke check failed with ${errors.length} error${errors.length === 1 ? "" : "s"}:`);
