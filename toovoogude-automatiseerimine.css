@@ -607,63 +607,6 @@ h3 {
   line-height: 1.4;
 }
 
-/* AI search visibility */
-
-.ai-search {
-  background: linear-gradient(115deg, #fff9f6 0%, #f8e7ec 100%);
-}
-
-.ai-search-grid {
-  display: grid;
-  gap: 3rem;
-  align-items: start;
-}
-
-.ai-search-grid .lead {
-  margin-bottom: 1.25rem;
-}
-
-.ai-search-grid > div > p:not(.eyebrow):not(.lead) {
-  max-width: 62ch;
-  margin-bottom: 1.8rem;
-}
-
-.ai-search-notes {
-  border-top: 1px solid var(--rose);
-}
-
-.ai-search-notes article {
-  display: grid;
-  grid-template-columns: 3rem 1fr;
-  column-gap: 1rem;
-  padding: 1.35rem 0;
-  border-bottom: 1px solid var(--rose);
-}
-
-.ai-search-notes span {
-  grid-row: span 2;
-  color: var(--raspberry-dark);
-  font-family: var(--serif);
-  font-size: 1.45rem;
-  font-style: italic;
-}
-
-.ai-search-notes h3,
-.ai-search-notes p {
-  grid-column: 2;
-}
-
-.ai-search-notes h3 {
-  margin: 0 0 .35rem;
-}
-
-.ai-search-notes p {
-  margin: 0;
-  color: var(--muted);
-  font-size: .94rem;
-  line-height: 1.55;
-}
-
 /* Examples */
 
 .examples-intro {
@@ -1462,7 +1405,6 @@ html.reveal-enabled [data-reveal].is-visible {
   .hero-grid,
   .statement,
   .examples-intro,
-  .ai-search-grid,
   .small-start,
   .about-grid,
   .case-study,
