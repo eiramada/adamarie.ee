@@ -477,6 +477,14 @@ h3 {
   box-shadow: var(--shadow);
 }
 
+@media (max-width: 719px) {
+  .hero-portrait {
+    max-height: 340px;
+    object-fit: cover;
+    object-position: center 20%;
+  }
+}
+
 .hero-note {
   position: static;
   width: 100%;
