@@ -152,11 +152,8 @@ async function checkPositioningRules() {
     if (/naisettevõt|teejuht/i.test(publicHtml)) {
       errors.push(`${displayPath(htmlFile)}: public copy or metadata still contains retired positioning terminology`);
     }
-    if (/\s-\s/.test(publicHtml)) {
-      errors.push(`${displayPath(htmlFile)}: visible spaced hyphen separator found; use an en dash instead`);
-    }
     if (publicHtml.includes("—")) {
-      errors.push(`${displayPath(htmlFile)}: em dash found; public HTML uses en dashes instead`);
+      errors.push(`${displayPath(htmlFile)}: em dash found; public HTML uses plain hyphens instead`);
     }
   }
 
