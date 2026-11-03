@@ -58,52 +58,21 @@
     });
   }
 
-  function initReveal() {
-    const revealItems = document.querySelectorAll("[data-reveal]");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduceMotion || !("IntersectionObserver" in window)) return;
-
-    const observer = new IntersectionObserver((entries, currentObserver) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          currentObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.documentElement.classList.add("reveal-enabled");
-    revealItems.forEach((item) => observer.observe(item));
-  }
-
   function setCurrentYear() {
     const year = document.getElementById("year");
     if (year) year.textContent = new Date().getFullYear();
   }
 
-  function initEmailContact() {
-    const emailLink = document.getElementById("email-link");
+  function initCopyEmail() {
     const copyEmailButton = document.getElementById("copy-email");
     const contactStatus = document.getElementById("contact-status");
 
-    if (!contactStatus) return;
+    if (!copyEmailButton || !contactStatus) return;
 
-    const setContactStatus = (message, state = "") => {
+    const setContactStatus = (message, state) => {
       contactStatus.textContent = message;
-      if (state) {
-        contactStatus.dataset.state = state;
-      } else {
-        delete contactStatus.dataset.state;
-      }
+      contactStatus.dataset.state = state;
     };
-
-    emailLink?.addEventListener("click", () => {
-      setContactStatus(
-        "Avan sinu e-posti rakenduse. Kui midagi ei avane, kopeeri aadress.",
-        "progress"
-      );
-    });
 
     if (copyEmailButton) {
       const fallbackCopy = (text) => {
@@ -139,12 +108,7 @@
             fallbackCopy(emailAddress);
           }
 
-          copyEmailButton.textContent = "Aadress kopeeritud";
           setContactStatus("E-posti aadress on lõikelauale kopeeritud.", "success");
-
-          window.setTimeout(() => {
-            copyEmailButton.textContent = "Kopeeri aadress";
-          }, 3000);
         } catch {
           setContactStatus(
             `Kopeerimine ei õnnestunud. Vali aadress käsitsi: ${emailAddress}`,
@@ -156,7 +120,6 @@
   }
 
   initMenu();
-  initReveal();
   setCurrentYear();
-  initEmailContact();
+  initCopyEmail();
 })();

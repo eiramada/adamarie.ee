@@ -11,7 +11,7 @@ Static site — plain HTML, CSS and vanilla JS. No build step, no dependencies.
 - `privaatsus.html` — privaatsustingimused
 - `teenusetingimused.html` — teenusetingimused
 - `toovoogude-automatiseerimine.css` — styles
-- `toovoogude-automatiseerimine.js` — small interactions (nav, reveal-on-scroll)
+- `toovoogude-automatiseerimine.js` — small interactions (navigation, email copying, current year)
 - `assets/` — images (portrait, work photo, Nutikorv)
 - `scripts/check-site.mjs` — dependency-free smoke check
 - `og-ada-toovoogude-automatiseerimine.jpg` — social share preview (1200×630)
