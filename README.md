@@ -13,7 +13,9 @@ Static site — plain HTML, CSS and vanilla JS. No build step, no dependencies.
 - `toovoogude-automatiseerimine.css` — styles
 - `toovoogude-automatiseerimine.js` — small interactions (navigation, email copying, current year)
 - `assets/` — images (portrait, work photo, Nutikorv)
+- `analytics-consent.js` — shared consent banner and GA4 integration
 - `scripts/check-site.mjs` — dependency-free smoke check
+- `scripts/check-analytics-consent.mjs` — simulated consent regression tests
 - `og-ada-toovoogude-automatiseerimine.jpg` — social share preview (1200×630)
 - `robots.txt` — allows search-engine crawling and points to the sitemap
 - `sitemap.xml` — canonical URLs submitted to search engines
@@ -67,3 +69,14 @@ node scripts/check-site.mjs
 
 Hosted on GitHub Pages — every push to `main` redeploys.
 Custom domain (`adamarie.ee`) via the `CNAME` file + DNS records at the registrar.
+
+## GA4 and analytics consent
+
+GA4 uses basic Consent Mode v2 and loads only after a saved analytics grant, on HTTPS production hostnames only. Local previews show the consent UI without sending data to Google. Consent is stored only in localStorage and expires after 60 days. GA cookies are limited to the remaining consent lifetime, without automatic cookie renewal. Advertising consent is always denied. If storage refuses a denial, the code stops analytics and attempts to remove the previous grant. If both operations fail, it warns the visitor to clear site data before returning. Expiry uses a one-shot timer, storage events and page visibility checks.
+
+Keep enhanced measurement, Google Signals, user-provided data, ads personalization, granular location/device data and optional account sharing off; do not link Ads. User and event data retention: 2 months, reset on new activity off. Confirm account settings and data processing terms before deployment.
+
+Before merging:
+- Run `node scripts/check-site.mjs` and `node scripts/check-analytics-consent.mjs`.
+- In a clean browser, test all three pages, consent and withdrawal, expiry, cookie deletion, multiple tabs, keyboard/mobile layout, storage errors and network requests. Before deployment, intercept Google requests rather than transmit test data. After approved deployment, verify an opted-in page_view in GA4 Realtime.
+- Check the privacy policy effective date against the actual publication date.

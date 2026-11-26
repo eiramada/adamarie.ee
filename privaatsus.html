@@ -42,7 +42,7 @@
       <article class="container legal">
         <header class="legal-header">
           <h1>Privaatsus ja küpsised</h1>
-          <p class="legal-updated">Kehtib alates 29. juulist 2026</p>
+          <p class="legal-updated">Kehtib alates 26. novembrist 2026</p>
           <p class="legal-summary">
             Siit saad teada, milliseid isikuandmeid OÜ Adagio töötleb, miks me
             seda teeme, kui kaua andmeid säilitame ja millised õigused sul on.
@@ -191,17 +191,80 @@
           küsimist teisiti.
         </p>
 
-        <h2>3. Veebilehe tehnilised andmed ja küpsised</h2>
+        <h2 id="kupsised">3. Veebilehe tehnilised andmed ja küpsised</h2>
         <p>
-          OÜ Adagio veebilehe kood domeenil https://adamarie.ee ei paigalda
-          analüütika-, reklaami- ega jälgimisküpsiseid ning veebilehel ei
-          kasutata kolmandate osapoolte analüütika- ega reklaamiskripte.
-          Seetõttu ei kuvata küpsiste nõusolekubännerit.
+          Veebileht asub GitHub Pagesi majutuses. Majutaja võib veebilehe
+          toimimise ja turvalisuse tagamiseks töödelda tehnilisi andmeid,
+          nagu IP-aadress ja päringute logid (vt ka punktid 5-7).
+          Vajalikud tehnilised toimingud ei sõltu analüütikanõusolekust.
+        </p>
+        <h3>3.1. Vabatahtlik veebianalüütika</h3>
+        <p>
+          Kasutame Google Analytics 4 (GA4) teenust, kui oled andnud selleks
+          eelneva nõusoleku. Eesmärk on mõista veebilehe kasutust ja parandada
+          selle sisu ning toimivust. Õiguslik alus on sinu nõusolek (isikuandmete
+          kaitse üldmääruse artikli 6 lõike 1 punkt a). Enne nõusolekut ja
+          keeldumise korral ei laadita Google Analyticsi skripti ega saadeta
+          selle kaudu Google’ile mõõtmisandmeid.
         </p>
         <p>
-          Veebilehe toimimiseks vältimatute küpsiste jaoks ei ole nõusolekut
-          vaja.
+          GA4 võib töödelda pseudonüümseid külastaja ja seansi tunnuseid,
+          lehevaatamisi ja automaatseid põhisündmusi, külastuse kestust, suunamisallika päritolu,
+          seadme ja brauseri üldandmeid ning ligikaudset asukohta. IP-aadressi
+          kasutatakse muu hulgas ligikaudse asukoha tuletamiseks; Google’i
+          teatel ELi kasutajate IP-aadresse GA4 ei logi ega säilita.
+          Veebilehe seadistuses on reklaamiküpsiste nõusolek, Google Signals
+          ja reklaamide isikupärastamine keelatud. Täiustatud mõõtmine on välja
+          lülitatud. GA4 lehevaatamise seadistuses kasutame veebilehe aadressi
+          ilma päringuparameetrite ja ankrufragmendita ning suunamisallika
+          päritolu (origin).
         </p>
+        <h3>3.2. Salvestatavad andmed ja küpsised</h3>
+        <ul>
+          <li><strong>adamarie.analytics-consent.v1</strong> - brauseri
+            lokaalsalvestuse kirje, mis hoiab sinu nõusoleku või keeldumise
+            valikut ja aegumisaega 60 päeva. Aegunud kirje eemaldatakse järgmisel
+            kontrollimisel. See on vajalik valiku meelespidamiseks ega ole
+            analüütikaküpsis.</li>
+          <li><strong>_ga</strong> - GA4 küpsis külastajate eristamiseks,
+            seadistatud kestus kuni 60 päeva.</li>
+          <li><strong>_ga_*</strong> - GA4 küpsis seansi oleku säilitamiseks,
+            seadistatud kestus kuni 60 päeva.</li>
+        </ul>
+        <p>
+          Brauser võib küpsiste säilitusaega lühendada. GA4 kasutaja- ja
+          sündmusetasandi andmete säilitamisaeg Google’i süsteemis on 2 kuud.
+          Kasutajaandmete säilitusaega uue tegevuse korral ei pikendata.
+          Koondstatistika säilitamine võib sellest erineda.
+        </p>
+        <h3>3.3. Andmete saaja ja edastamine</h3>
+        <p>
+          Analüütikateenuse pakkuja on Google (EMP klientide puhul Google Ireland
+          Limited). Andmeid võidakse töödelda ka väljaspool Euroopa
+          Majanduspiirkonda, sealhulgas USAs. Google kirjeldab edastamise
+          kaitsemeetmetena ELi-USA andmekaitseraamistikku ja vajaduse korral
+          Euroopa Komisjoni lepingu tüüptingimusi. Lisateave:
+          <a href="https://business.safety.google/adsdatatransfers/">Google’i rahvusvaheliste andmeedastuste teave</a>,
+          <a href="https://policies.google.com/privacy?hl=et">Google’i privaatsuseeskirjad</a>,
+          <a href="https://business.safety.google/adsprocessorterms/">Google’i andmetöötlustingimused</a> ja
+          <a href="https://support.google.com/analytics/answer/12017362">GA4 andmekaitse ELis</a>.
+        </p>
+        <h3>3.4. Nõusoleku muutmine ja tagasivõtmine</h3>
+        <p>
+          Küpsiste teates saad analüütikat lubada või sellest keelduda.
+          Valik on vabatahtlik ning keeldumine ei piira veebilehe kasutamist.
+          Saad oma valikut igal ajal muuta jaluses oleva nupu „Küpsiste seaded“
+          kaudu. Nõusoleku tagasivõtmisel peatame edasise analüütika ja
+          eemaldame veebilehe GA4 küpsised, millele brauser võimaldab ligipääsu.
+          Kui brauser takistab keeldumise salvestamist, peatame analüütika avatud
+          lehel ja proovime varasema nõusoleku eemaldada. Kui ka see ei õnnestu,
+          anname juhise veebilehe andmete kustutamiseks enne järgmist külastust.
+          See ei mõjuta enne tagasivõtmist
+          toimunud töötlemise seaduslikkust. Varasemate andmete kohta saad
+          esitada taotluse punktis 8 kirjeldatud viisil.
+        </p>
+        <p><button class="cookie-settings cookie-settings--inline" type="button"
+          data-cookie-settings hidden>Ava küpsiste seaded</button></p>
 
         <h2>4. Kust andmed pärinevad?</h2>
         <p>
@@ -220,6 +283,10 @@
           <li>
             <strong>GitHub, Inc. (GitHub Pages)</strong> - veebimajutus ning
             veebilehe tehnilised ja turvalogid;
+          </li>
+          <li>
+            <strong>Google (Google Analytics 4)</strong> - vabatahtlik
+            veebianalüütika vastavalt punktile 3;
           </li>
           <li>
             <strong>Zone Media OÜ</strong> - e-posti majutus ning päringute ja
@@ -268,6 +335,10 @@
           andmekaitseraamistikus (EU-U.S. Data Privacy Framework).
         </p>
         <p>
+          Google Analyticsi andmete rahvusvahelist edastamist ja kaitsemeetmeid
+          kirjeldab punkt 3.3.
+        </p>
+        <p>
           Ka mõni kliendiga kokku lepitud pilve-, video- või AI-teenuse pakkuja
           võib töödelda andmeid väljaspool Euroopa Majanduspiirkonda. Kasutame
           sellist teenust isikuandmete jaoks ainult siis, kui edastamiseks on
@@ -306,6 +377,11 @@
             privaatsusavaldus. OÜ Adagio käsutusse jõudnud konkreetse
             turvaintsidendi andmeid säilitame intsidendi lahendamise ja
             võimalike õigusnõuete kaitsmise lõpuni.
+          </li>
+          <li>
+            <strong>Veebianalüütika:</strong> kuni 2 kuud kasutaja- ja
+            sündmusetasandi andmete puhul; koondstatistika ja küpsiste kohta
+            vt punkt 3.2.
           </li>
           <li>
             <strong>Andmekaitsealased taotlused:</strong> taotluse lahendamiseks
@@ -375,8 +451,8 @@
         <p>
           OÜ Adagio ei tee sinu kohta otsuseid, mis põhinevad üksnes
           automatiseeritud töötlemisel ja toovad sulle kaasa õiguslikke või
-          samaväärselt olulisi tagajärgi. Me ei koosta veebikülastajate
-          profiile.
+          samaväärselt olulisi tagajärgi. Me ei kasuta veebianalüütikat külastajate reklaamiprofiilide
+          koostamiseks ega automatiseeritud individuaalsete otsuste tegemiseks.
         </p>
 
         <h2>10. Turvalisus</h2>
@@ -407,6 +483,7 @@
           </div>
         </div>
         <nav class="footer-links" aria-label="Jaluse lingid">
+          <button class="cookie-settings" type="button" data-cookie-settings hidden>Küpsiste seaded</button>
           <a href="index.html">Avaleht</a>
           <a href="teenusetingimused.html">Teenusetingimused</a>
           <a href="mailto:adamarie@tammiksaar.ee">adamarie@tammiksaar.ee</a>
@@ -416,6 +493,7 @@
         </p>
       </div>
     </footer>
+    <script src="analytics-consent.js" defer></script>
     <script src="toovoogude-automatiseerimine.js" defer></script>
   </body>
 </html>
