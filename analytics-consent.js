@@ -1,16 +1,9 @@
 (() => {
   const measurementId = "G-JB9KXMQC1J";
   const storageKey = "adamarie.analytics-consent.v1";
-  const denialCookie = "adamarie_analytics_denied";
   const lifetime = 60 * 24 * 60 * 60;
   const production = location.protocol === "https:" &&
     ["adamarie.ee", "www.adamarie.ee"].includes(location.hostname);
-  const banner = document.getElementById("cookie-banner");
-  if (!banner) return;
-
-  const accept = banner.querySelector("[data-cookie-accept]");
-  const reject = banner.querySelector("[data-cookie-reject]");
-  const status = banner.querySelector("[data-cookie-status]");
   const disableKey = "ga-disable-" + measurementId;
   const denied = {
     analytics_storage: "denied",
@@ -18,57 +11,63 @@
     ad_user_data: "denied",
     ad_personalization: "denied"
   };
-  let tag = null;
-  let stopped = false;
-  let blocked = false;
-  let opener = null;
-  let timer;
   window[disableKey] = true;
 
-  function hasDenialCookie() {
-    return document.cookie.split(";").some(cookie =>
-      cookie.trim().startsWith(denialCookie + "="));
-  }
+  document.body.insertAdjacentHTML("beforeend", `
+  <section class="cookie-banner" id="cookie-banner" aria-labelledby="cookie-heading" hidden>
+    <h2 id="cookie-heading">Analüütikaküpsised</h2>
+    <p>Soovi korral lubad Google Analytics 4 küpsised, et saaksime veebilehe kasutust mõõta ja seda parandada. Keeldumine ei mõjuta veebilehe kasutamist. Valikut saad igal ajal muuta jaluses.</p>
+    <p><a href="privaatsus.html#kupsised">Loe privaatsuse ja küpsiste kohta</a>.</p>
+    <div class="cookie-actions">
+      <button type="button" data-cookie-reject>Keeldu analüütikast</button>
+      <button type="button" data-cookie-accept>Luba analüütika</button>
+    </div>
+    <p class="cookie-status" data-cookie-status role="status"></p>
+  </section>
+  `);
+  const banner = document.getElementById("cookie-banner");
+  const status = banner.querySelector("[data-cookie-status]");
+  const settings = [...document.querySelectorAll("[data-cookie-settings]")];
+  let opener, timer, tag;
+  let stopped = false;
+  let unsavedDenial = false;
 
-  function setDenialCookie(maxAge) {
-    document.cookie = denialCookie + "=1; Max-Age=" + maxAge +
-      "; Path=/; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : "");
+  function removeChoice() {
+    try {
+      localStorage.removeItem(storageKey);
+      return localStorage.getItem(storageKey) === null;
+    } catch {
+      return false;
+    }
   }
 
   function readChoice() {
     try {
-      if (hasDenialCookie()) return { choice: "denied" };
-      const saved = JSON.parse(localStorage.getItem(storageKey));
-      if (saved && ["granted", "denied"].includes(saved.choice) &&
-          Number.isFinite(saved.expires) && saved.expires > Date.now()) return saved;
+      const raw = localStorage.getItem(storageKey);
+      if (raw === null) return null;
+      const saved = JSON.parse(raw);
+      if (!saved || !["granted", "denied"].includes(saved.choice) ||
+          !Number.isFinite(saved.expires) || saved.expires <= Date.now()) {
+        removeChoice();
+        return null;
+      }
+      // Do not trust a previous grant if the consent store is read-only.
+      if (saved.choice === "granted") localStorage.setItem(storageKey, raw);
+      return saved;
     } catch {
-      // No usable storage: never assume consent.
+      removeChoice();
+      return null;
     }
-    return null;
   }
 
   function saveChoice(choice) {
     const value = JSON.stringify({ choice, expires: Date.now() + lifetime * 1000 });
     try {
       localStorage.setItem(storageKey, value);
-      if (localStorage.getItem(storageKey) === value) {
-        if (choice === "granted") {
-          setDenialCookie(0);
-          return !hasDenialCookie();
-        }
-        return true;
-      }
+      return localStorage.getItem(storageKey) === value;
     } catch {
-      // If writing fails, try to invalidate any earlier grant below.
+      return false;
     }
-    if (choice === "denied") {
-      try { localStorage.removeItem(storageKey); } catch { /* use fallback */ }
-      try {
-        setDenialCookie(lifetime);
-        if (hasDenialCookie()) return true;
-      } catch { /* report failure to the visitor below */ }
-    }
-    return false;
   }
 
   function clearAnalyticsCookies() {
@@ -80,10 +79,12 @@
         const expired = name + "=; Max-Age=0; Path=/; SameSite=Lax";
         document.cookie = expired;
         document.cookie = expired + "; Domain=" + location.hostname;
-        document.cookie = expired + "; Domain=adamarie.ee";
+        if (location.hostname !== "adamarie.ee") {
+          document.cookie = expired + "; Domain=adamarie.ee";
+        }
       }
     } catch {
-      // A blocked cookie API cannot prevent us from disabling the tag.
+      // The tag stays disabled even if browser cookie access fails.
     }
   }
 
@@ -97,10 +98,6 @@
   }
 
   function loadAnalytics(expires) {
-    clearTimeout(timer);
-    // Ordinary cross-tab changes use storage events. Poll while consent is
-    // granted to detect fallback-cookie changes and consent expiry.
-    timer = setTimeout(syncChoice, Math.max(0, Math.min(5000, expires - Date.now())));
     if (!production || tag) return;
     if (stopped) {
       location.reload();
@@ -128,8 +125,7 @@
     document.head.appendChild(tag);
   }
 
-  function stopAnalytics(reload) {
-    clearTimeout(timer);
+  function stopAnalytics(reload = false) {
     window[disableKey] = true;
     if (tag) {
       window.gtag("consent", "update", denied);
@@ -139,68 +135,70 @@
     }
     clearAnalyticsCookies();
     // An executed third-party script cannot reliably be unloaded.
-    // Never reload into a readable earlier grant if withdrawal failed.
     if (stopped && reload) location.reload();
   }
 
-  function showBanner(focus = false) {
-    const choice = blocked ? "denied" : readChoice()?.choice;
+  function showBanner(choice, focus = false) {
     status.textContent = choice === "granted" ? "Praegune valik: analüütika lubatud."
       : choice === "denied" ? "Praegune valik: analüütika keelatud." : "";
     banner.hidden = false;
-    if (focus) reject.focus();
+    if (focus) banner.querySelector("[data-cookie-reject]").focus();
   }
 
   function hideBanner() {
     const focusedInside = banner.contains(document.activeElement);
     banner.hidden = true;
-    if (opener) opener.focus();
-    else if (focusedInside) document.querySelector("[data-cookie-settings]")?.focus();
+    if (opener || focusedInside) (opener || settings[0])?.focus();
     opener = null;
   }
 
-  function choose(choice) {
-    if (choice === "denied") {
-      const saved = saveChoice("denied");
-      blocked = !saved;
-      stopAnalytics(saved && readChoice()?.choice !== "granted");
-      if (saved) hideBanner();
-      else {
-        showBanner();
-        status.textContent = "Analüütika on sellel lehel peatatud, kuid keeldumist ei õnnestunud salvestada. Enne uuesti külastamist kustuta brauseri selle veebilehe andmed või luba valiku salvestamine.";
-      }
-      return;
+  function syncChoice() {
+    clearTimeout(timer);
+    if (unsavedDenial) return;
+    const saved = readChoice();
+    if (saved) {
+      // setTimeout cannot represent delays longer than about 24.8 days.
+      timer = setTimeout(syncChoice, Math.min(2147483647, Math.max(0, saved.expires - Date.now())));
     }
+    if (saved?.choice === "granted") loadAnalytics(saved.expires);
+    else stopAnalytics(true);
+    if (opener || !saved) showBanner(saved?.choice);
+    else hideBanner();
+  }
+
+  banner.querySelector("[data-cookie-accept]").addEventListener("click", () => {
     if (!saveChoice("granted")) {
-      status.textContent = "Valikut ei õnnestunud salvestada. Analüütika lubamiseks peab brauser võimaldama nõusoleku salvestamist.";
+      status.textContent = "Valikut ei õnnestunud salvestada. Analüütika jääb keelatuks, kui nõusolekut ei saa salvestada.";
       return;
     }
-    blocked = false;
+    unsavedDenial = false;
     hideBanner();
     syncChoice();
-  }
+  });
 
-  function syncChoice() {
-    if (blocked) return;
-    const saved = readChoice();
-    if (saved?.choice === "granted") {
-      if (!opener) hideBanner();
-      loadAnalytics(saved.expires);
-    } else {
-      stopAnalytics(true);
-      if (saved?.choice === "denied") {
-        if (!opener) hideBanner();
-      } else showBanner();
+  banner.querySelector("[data-cookie-reject]").addEventListener("click", () => {
+    clearTimeout(timer);
+    stopAnalytics();
+    if (saveChoice("denied")) {
+      unsavedDenial = false;
+      hideBanner();
+      syncChoice();
+      return;
     }
-  }
+    // Invalidate a previous grant even when saving a denial is unavailable.
+    const removed = removeChoice();
+    unsavedDenial = true;
+    showBanner("denied");
+    status.textContent = removed
+      ? "Analüütika on peatatud. Keeldumist ei õnnestunud salvestada; järgmisel külastusel küsime uuesti sinu valikut."
+      : "Analüütika on sellel lehel peatatud, kuid keeldumist ei õnnestunud salvestada. Enne uuesti külastamist kustuta brauseri selle veebilehe andmed.";
+  });
 
-  accept.addEventListener("click", () => choose("granted"));
-  reject.addEventListener("click", () => choose("denied"));
-  for (const button of document.querySelectorAll("[data-cookie-settings]")) {
+  for (const button of settings) {
     button.hidden = false;
     button.addEventListener("click", () => {
       opener = button;
-      showBanner(true);
+      showBanner(unsavedDenial ? "denied" : readChoice()?.choice, true);
     });
   }
   window.addEventListener("storage", event => {

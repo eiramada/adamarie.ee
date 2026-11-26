@@ -215,18 +215,17 @@
           teatel ELi kasutajate IP-aadresse GA4 ei logi ega säilita.
           Veebilehe seadistuses on reklaamiküpsiste nõusolek, Google Signals
           ja reklaamide isikupärastamine keelatud. Täiustatud mõõtmine on välja
-          lülitatud. Veebilehe aadressist ei edastata päringuparameetreid ega
-          ankrufragmenti; suunamisallikast kasutatakse ainult päritolu (origin).
+          lülitatud. GA4 lehevaatamise seadistuses kasutame veebilehe aadressi
+          ilma päringuparameetrite ja ankrufragmendita ning suunamisallika
+          päritolu (origin).
         </p>
         <h3>3.2. Salvestatavad andmed ja küpsised</h3>
         <ul>
           <li><strong>adamarie.analytics-consent.v1</strong> - brauseri
             lokaalsalvestuse kirje, mis hoiab sinu nõusoleku või keeldumise
-            valikut ja aegumisaega kuni 60 päeva. See on vajalik valiku
-            meelespidamiseks ega ole analüütikaküpsis.</li>
-          <li><strong>adamarie_analytics_denied</strong> - vajalik esimese osapoole
-            küpsis keeldumise meelespidamiseks kuni 60 päeva, ainult juhul, kui
-            keeldumist ei õnnestu brauseri lokaalsalvestusse salvestada.</li>
+            valikut ja aegumisaega 60 päeva. Aegunud kirje eemaldatakse järgmisel
+            kontrollimisel. See on vajalik valiku meelespidamiseks ega ole
+            analüütikaküpsis.</li>
           <li><strong>_ga</strong> - GA4 küpsis külastajate eristamiseks,
             seadistatud kestus kuni 60 päeva.</li>
           <li><strong>_ga_*</strong> - GA4 küpsis seansi oleku säilitamiseks,
@@ -258,7 +257,8 @@
           kaudu. Nõusoleku tagasivõtmisel peatame edasise analüütika ja
           eemaldame veebilehe GA4 küpsised, millele brauser võimaldab ligipääsu.
           Kui brauser takistab keeldumise salvestamist, peatame analüütika avatud
-          lehel ja anname juhise veebilehe andmete kustutamiseks.
+          lehel ja proovime varasema nõusoleku eemaldada. Kui ka see ei õnnestu,
+          anname juhise veebilehe andmete kustutamiseks enne järgmist külastust.
           See ei mõjuta enne tagasivõtmist
           toimunud töötlemise seaduslikkust. Varasemate andmete kohta saad
           esitada taotluse punktis 8 kirjeldatud viisil.
@@ -493,16 +493,6 @@
         </p>
       </div>
     </footer>
-    <section class="cookie-banner" id="cookie-banner" aria-labelledby="cookie-heading" hidden>
-      <h2 id="cookie-heading">Analüütikaküpsised</h2>
-      <p>Soovi korral lubad Google Analytics 4 küpsised, et saaksime veebilehe kasutust mõõta ja seda parandada. Keeldumine ei mõjuta veebilehe kasutamist. Valikut saad igal ajal muuta jaluses.</p>
-      <p><a href="privaatsus.html#kupsised">Loe privaatsuse ja küpsiste kohta</a>.</p>
-      <div class="cookie-actions">
-        <button type="button" data-cookie-reject>Keeldu analüütikast</button>
-        <button type="button" data-cookie-accept>Luba analüütika</button>
-      </div>
-      <p class="cookie-status" data-cookie-status role="status"></p>
-    </section>
     <script src="analytics-consent.js" defer></script>
     <script src="toovoogude-automatiseerimine.js" defer></script>
   </body>
