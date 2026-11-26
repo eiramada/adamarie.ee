@@ -12,14 +12,15 @@ function simulate(source, options = {}, URLClass = URL) {
   const cookies = new Map(options.cookies || []);
   const scripts = [], commands = [], listeners = {}, documentListeners = {};
   let pending, delay, reloads = 0, removed = 0, markup = "";
+  const focusCalls = [];
   const node = () => ({ hidden: true, textContent: "", events: {},
-    addEventListener(type, fn) { this.events[type] = fn; }, focus() {} });
+    addEventListener(type, fn) { this.events[type] = fn; }, focus(options) { focusCalls.push(options); } });
   const accept = node(), reject = node(), status = node(), settings = node(), banner = node();
   banner.querySelector = key => ({
     "[data-cookie-accept]": accept, "[data-cookie-reject]": reject,
     "[data-cookie-status]": status
   })[key];
-  banner.contains = () => false;
+  banner.contains = element => element === accept || element === reject;
   const document = {
     body: { insertAdjacentHTML(position, html) { markup += html; } },
     getElementById: () => banner, querySelectorAll: () => [settings],
@@ -56,7 +57,8 @@ function simulate(source, options = {}, URLClass = URL) {
     (fn, ms) => { pending = fn; delay = ms; return 1; },
     () => { pending = null; delay = undefined; }, URLClass);
   return {
-    accept: () => accept.events.click(), reject: () => reject.events.click(),
+    accept: () => { document.activeElement = accept; accept.events.click(); },
+    reject: () => { document.activeElement = reject; reject.events.click(); },
     settings: () => settings.events.click(),
     advance: ms => { now += ms; pending?.(); },
     revisit: () => listeners.pageshow(),
@@ -65,7 +67,7 @@ function simulate(source, options = {}, URLClass = URL) {
       listeners.storage({key:"adamarie.analytics-consent.v1"});
     },
     blockWrites: (remove = false) => { options.blockWrite = true; options.blockRemove = remove; },
-    state: () => ({ scripts,commands,reloads,removed,cookies,stored,delay,markup,
+    state: () => ({ scripts,commands,reloads,removed,cookies,stored,delay,markup,focusCalls,
       hidden:banner.hidden,status:status.textContent,disabled:window["ga-disable-G-JB9KXMQC1J"] })
   };
 }
@@ -78,6 +80,19 @@ function runTests(source, URLClass = URL) {
     const s = sim().state();
     check(!s.hidden && s.disabled && !s.scripts.length && !s.commands.length, "Google tag blocked");
     check(s.markup.includes('id="cookie-banner"') && s.markup.includes("privaatsus.html#kupsised"), "shared banner");
+  });
+  test("cookie labels", () => {
+    const { markup } = sim().state();
+    check(markup.includes("data-cookie-accept>Luba küpsised</button>") &&
+      markup.includes("data-cookie-reject>Ära luba küpsised</button>"), "requested labels");
+  });
+  test("close banner without scrolling", () => {
+    for (const action of ["accept", "reject"]) {
+      const a = sim(); a[action]();
+      check(a.state().focusCalls.at(-1)?.preventScroll === true, action + " preserves scroll");
+      const b = sim(); b.settings(); b[action]();
+      check(b.state().focusCalls.at(-1)?.preventScroll === true, action + " from settings preserves scroll");
+    }
   });
   test("reject", () => {
     const a = sim(); a.reject(); const s = a.state();

@@ -19,8 +19,8 @@
     <p>Soovi korral lubad Google Analytics 4 küpsised, et saaksime veebilehe kasutust mõõta ja seda parandada. Keeldumine ei mõjuta veebilehe kasutamist. Valikut saad igal ajal muuta jaluses.</p>
     <p><a href="privaatsus.html#kupsised">Loe privaatsuse ja küpsiste kohta</a>.</p>
     <div class="cookie-actions">
-      <button type="button" data-cookie-reject>Keeldu analüütikast</button>
-      <button type="button" data-cookie-accept>Luba analüütika</button>
+      <button type="button" data-cookie-reject>Ära luba küpsised</button>
+      <button type="button" data-cookie-accept>Luba küpsised</button>
     </div>
     <p class="cookie-status" data-cookie-status role="status"></p>
   </section>
@@ -148,7 +148,7 @@
   function hideBanner() {
     const focusedInside = banner.contains(document.activeElement);
     banner.hidden = true;
-    if (opener || focusedInside) (opener || settings[0])?.focus();
+    if (opener || focusedInside) (opener || settings[0])?.focus({ preventScroll: true });
     opener = null;
   }
 
