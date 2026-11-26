@@ -191,17 +191,70 @@
           küsimist teisiti.
         </p>
 
-        <h2>3. Veebilehe tehnilised andmed ja küpsised</h2>
+        <h2 id="kupsised">3. Veebilehe tehnilised andmed ja küpsised</h2>
         <p>
-          OÜ Adagio veebilehe kood domeenil https://adamarie.ee ei paigalda
-          analüütika-, reklaami- ega jälgimisküpsiseid ning veebilehel ei
-          kasutata kolmandate osapoolte analüütika- ega reklaamiskripte.
-          Seetõttu ei kuvata küpsiste nõusolekubännerit.
+          Veebileht asub GitHub Pagesi majutuses. Majutaja võib veebilehe
+          toimimise ja turvalisuse tagamiseks töödelda tehnilisi andmeid,
+          nagu IP-aadress ja päringute logid (vt ka punktid 5-7).
+          Vajalikud tehnilised toimingud ei sõltu analüütikanõusolekust.
+        </p>
+        <h3>3.1. Vabatahtlik veebianalüütika</h3>
+        <p>
+          Kasutame Google Analytics 4 (GA4) teenust, kui oled andnud selleks
+          eelneva nõusoleku. Eesmärk on mõista veebilehe kasutust ja parandada
+          selle sisu ning toimivust. Õiguslik alus on sinu nõusolek (isikuandmete
+          kaitse üldmääruse artikli 6 lõike 1 punkt a). Enne nõusolekut ja
+          keeldumise korral ei laadita Google Analyticsi skripti ega saadeta
+          selle kaudu Google’ile mõõtmisandmeid.
         </p>
         <p>
-          Veebilehe toimimiseks vältimatute küpsiste jaoks ei ole nõusolekut
-          vaja.
+          GA4 võib töödelda pseudonüümseid külastaja ja seansi tunnuseid,
+          lehevaatamisi ja muid kasutussündmusi, külastuse kestust, suunamisallikat,
+          seadme ja brauseri üldandmeid ning ligikaudset asukohta. IP-aadressi
+          kasutatakse muu hulgas ligikaudse asukoha tuletamiseks; Google’i
+          teatel ELi kasutajate IP-aadresse GA4 ei logi ega säilita.
+          Veebilehe seadistuses on reklaamiküpsiste nõusolek, Google Signals
+          ja reklaamide isikupärastamine keelatud.
         </p>
+        <h3>3.2. Salvestatavad andmed ja küpsised</h3>
+        <ul>
+          <li><strong>adamarie.analytics-consent.v1</strong> - brauseri
+            lokaalsalvestuse kirje, mis hoiab sinu nõusoleku või keeldumise
+            valikut ja aegumisaega kuni 180 päeva. See on vajalik valiku
+            meelespidamiseks ega ole analüütikaküpsis.</li>
+          <li><strong>_ga</strong> - GA4 küpsis külastajate eristamiseks,
+            seadistatud kestus kuni 180 päeva.</li>
+          <li><strong>_ga_*</strong> - GA4 küpsis seansi oleku säilitamiseks,
+            seadistatud kestus kuni 180 päeva.</li>
+        </ul>
+        <p>
+          Brauser võib küpsiste säilitusaega lühendada. GA4 kasutaja- ja
+          sündmusetasandi andmete säilitamine Google’i süsteemis sõltub
+          GA4 konto seadistusest (tavapaketis 2 või 14 kuud); koondstatistika
+          säilitamine võib sellest erineda.
+        </p>
+        <h3>3.3. Andmete saaja ja edastamine</h3>
+        <p>
+          Analüütikateenuse pakkuja on Google (EMP klientide puhul Google Ireland
+          Limited). Andmeid võidakse töödelda ka väljaspool Euroopa
+          Majanduspiirkonda, sealhulgas USAs, kohaldatavate andmekaitsealaste
+          edastusmehhanismide alusel. Lisateave:
+          <a href="https://policies.google.com/privacy?hl=et">Google’i privaatsuseeskirjad</a>,
+          <a href="https://business.safety.google/adsprocessorterms/">Google’i andmetöötlustingimused</a> ja
+          <a href="https://support.google.com/analytics/answer/12017362">GA4 andmekaitse ELis</a>.
+        </p>
+        <h3>3.4. Nõusoleku muutmine ja tagasivõtmine</h3>
+        <p>
+          Küpsiste teates saad analüütikat lubada või sellest keelduda.
+          Valik on vabatahtlik ning keeldumine ei piira veebilehe kasutamist.
+          Saad oma valikut igal ajal muuta jaluses oleva nupu „Küpsiste seaded“
+          kaudu. Nõusoleku tagasivõtmisel peatame edasise analüütika ja
+          eemaldame veebilehe GA4 küpsised. See ei mõjuta enne tagasivõtmist
+          toimunud töötlemise seaduslikkust. Varasemate andmete kohta saad
+          esitada taotluse punktis 8 kirjeldatud viisil.
+        </p>
+        <p><button class="cookie-settings cookie-settings--inline" type="button"
+          data-cookie-settings hidden>Ava küpsiste seaded</button></p>
 
         <h2>4. Kust andmed pärinevad?</h2>
         <p>
@@ -407,6 +460,7 @@
           </div>
         </div>
         <nav class="footer-links" aria-label="Jaluse lingid">
+          <button class="cookie-settings" type="button" data-cookie-settings hidden>Küpsiste seaded</button>
           <a href="index.html">Avaleht</a>
           <a href="teenusetingimused.html">Teenusetingimused</a>
           <a href="mailto:adamarie@tammiksaar.ee">adamarie@tammiksaar.ee</a>
@@ -416,6 +470,17 @@
         </p>
       </div>
     </footer>
+    <section class="cookie-banner" id="cookie-banner" aria-labelledby="cookie-heading" hidden>
+      <h2 id="cookie-heading">Analüütikaküpsised</h2>
+      <p>Soovi korral lubad Google Analytics 4 küpsised, et saaksime veebilehe kasutust mõõta ja seda parandada. Keeldumine ei mõjuta veebilehe kasutamist. Valikut saad igal ajal muuta jaluses.</p>
+      <p><a href="privaatsus.html#kupsised">Loe privaatsuse ja küpsiste kohta</a>.</p>
+      <div class="cookie-actions">
+        <button type="button" data-cookie-reject>Keeldu analüütikast</button>
+        <button type="button" data-cookie-accept>Luba analüütika</button>
+      </div>
+      <p class="cookie-status" data-cookie-status role="status"></p>
+    </section>
+    <script src="analytics-consent.js" defer></script>
     <script src="toovoogude-automatiseerimine.js" defer></script>
   </body>
 </html>

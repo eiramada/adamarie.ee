@@ -67,3 +67,11 @@ node scripts/check-site.mjs
 
 Hosted on GitHub Pages — every push to `main` redeploys.
 Custom domain (`adamarie.ee`) via the `CNAME` file + DNS records at the registrar.
+
+## GA4 and analytics consent
+
+Before merging/deploying this change:
+- Set the actual GA4 web stream Measurement ID in `analytics-consent.js` (empty means analytics and the banner remain disabled). Only the production hostnames load GA4.
+- In GA4 Admin, verify the Google tag has no Ads destinations or Ads links, disable Google Signals and enhanced measurement events that are not needed, disable unnecessary granular data, and select 2 months of event/user data retention. Confirm Google's data processing terms and applicable transfer safeguards. Update privacy section 3 with the verified retention setting and the policy effective date before going live.
+- Test in a clean browser on the production hostname: no Google Analytics or Tag Manager requests or GA cookies before a choice or after rejection; accept and verify a GA4 page_view in Realtime; reload and navigate between all three pages; reopen settings and reject to verify cookies are removed and tracking stays off after reload and in other tabs. Check mobile layout, keyboard focus and storage-disabled behavior.
+- Consent uses basic Consent Mode v2; the Google tag is injected only after a stored grant. Consent and GA cookies have a configured lifetime of 180 days. Local previews intentionally do not send data.
