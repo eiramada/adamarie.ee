@@ -42,7 +42,7 @@
       <article class="container legal">
         <header class="legal-header">
           <h1>Privaatsus ja küpsised</h1>
-          <p class="legal-updated">Kehtib alates 29. juulist 2026</p>
+          <p class="legal-updated">Kehtib alates 26. novembrist 2026</p>
           <p class="legal-summary">
             Siit saad teada, milliseid isikuandmeid OÜ Adagio töötleb, miks me
             seda teeme, kui kaua andmeid säilitame ja millised õigused sul on.
@@ -209,36 +209,43 @@
         </p>
         <p>
           GA4 võib töödelda pseudonüümseid külastaja ja seansi tunnuseid,
-          lehevaatamisi ja muid kasutussündmusi, külastuse kestust, suunamisallikat,
+          lehevaatamisi ja automaatseid põhisündmusi, külastuse kestust, suunamisallika päritolu,
           seadme ja brauseri üldandmeid ning ligikaudset asukohta. IP-aadressi
           kasutatakse muu hulgas ligikaudse asukoha tuletamiseks; Google’i
           teatel ELi kasutajate IP-aadresse GA4 ei logi ega säilita.
           Veebilehe seadistuses on reklaamiküpsiste nõusolek, Google Signals
-          ja reklaamide isikupärastamine keelatud.
+          ja reklaamide isikupärastamine keelatud. Täiustatud mõõtmine on välja
+          lülitatud. Veebilehe aadressist ei edastata päringuparameetreid ega
+          ankrufragmenti; suunamisallikast kasutatakse ainult päritolu (origin).
         </p>
         <h3>3.2. Salvestatavad andmed ja küpsised</h3>
         <ul>
           <li><strong>adamarie.analytics-consent.v1</strong> - brauseri
             lokaalsalvestuse kirje, mis hoiab sinu nõusoleku või keeldumise
-            valikut ja aegumisaega kuni 180 päeva. See on vajalik valiku
+            valikut ja aegumisaega kuni 60 päeva. See on vajalik valiku
             meelespidamiseks ega ole analüütikaküpsis.</li>
+          <li><strong>adamarie_analytics_denied</strong> - vajalik esimese osapoole
+            küpsis keeldumise meelespidamiseks kuni 60 päeva, ainult juhul, kui
+            keeldumist ei õnnestu brauseri lokaalsalvestusse salvestada.</li>
           <li><strong>_ga</strong> - GA4 küpsis külastajate eristamiseks,
-            seadistatud kestus kuni 180 päeva.</li>
+            seadistatud kestus kuni 60 päeva.</li>
           <li><strong>_ga_*</strong> - GA4 küpsis seansi oleku säilitamiseks,
-            seadistatud kestus kuni 180 päeva.</li>
+            seadistatud kestus kuni 60 päeva.</li>
         </ul>
         <p>
           Brauser võib küpsiste säilitusaega lühendada. GA4 kasutaja- ja
-          sündmusetasandi andmete säilitamine Google’i süsteemis sõltub
-          GA4 konto seadistusest (tavapaketis 2 või 14 kuud); koondstatistika
-          säilitamine võib sellest erineda.
+          sündmusetasandi andmete säilitamisaeg Google’i süsteemis on 2 kuud.
+          Kasutajaandmete säilitusaega uue tegevuse korral ei pikendata.
+          Koondstatistika säilitamine võib sellest erineda.
         </p>
         <h3>3.3. Andmete saaja ja edastamine</h3>
         <p>
           Analüütikateenuse pakkuja on Google (EMP klientide puhul Google Ireland
           Limited). Andmeid võidakse töödelda ka väljaspool Euroopa
-          Majanduspiirkonda, sealhulgas USAs, kohaldatavate andmekaitsealaste
-          edastusmehhanismide alusel. Lisateave:
+          Majanduspiirkonda, sealhulgas USAs. Google kirjeldab edastamise
+          kaitsemeetmetena ELi-USA andmekaitseraamistikku ja vajaduse korral
+          Euroopa Komisjoni lepingu tüüptingimusi. Lisateave:
+          <a href="https://business.safety.google/adsdatatransfers/">Google’i rahvusvaheliste andmeedastuste teave</a>,
           <a href="https://policies.google.com/privacy?hl=et">Google’i privaatsuseeskirjad</a>,
           <a href="https://business.safety.google/adsprocessorterms/">Google’i andmetöötlustingimused</a> ja
           <a href="https://support.google.com/analytics/answer/12017362">GA4 andmekaitse ELis</a>.
@@ -249,7 +256,10 @@
           Valik on vabatahtlik ning keeldumine ei piira veebilehe kasutamist.
           Saad oma valikut igal ajal muuta jaluses oleva nupu „Küpsiste seaded“
           kaudu. Nõusoleku tagasivõtmisel peatame edasise analüütika ja
-          eemaldame veebilehe GA4 küpsised. See ei mõjuta enne tagasivõtmist
+          eemaldame veebilehe GA4 küpsised, millele brauser võimaldab ligipääsu.
+          Kui brauser takistab keeldumise salvestamist, peatame analüütika avatud
+          lehel ja anname juhise veebilehe andmete kustutamiseks.
+          See ei mõjuta enne tagasivõtmist
           toimunud töötlemise seaduslikkust. Varasemate andmete kohta saad
           esitada taotluse punktis 8 kirjeldatud viisil.
         </p>
@@ -273,6 +283,10 @@
           <li>
             <strong>GitHub, Inc. (GitHub Pages)</strong> - veebimajutus ning
             veebilehe tehnilised ja turvalogid;
+          </li>
+          <li>
+            <strong>Google (Google Analytics 4)</strong> - vabatahtlik
+            veebianalüütika vastavalt punktile 3;
           </li>
           <li>
             <strong>Zone Media OÜ</strong> - e-posti majutus ning päringute ja
@@ -321,6 +335,10 @@
           andmekaitseraamistikus (EU-U.S. Data Privacy Framework).
         </p>
         <p>
+          Google Analyticsi andmete rahvusvahelist edastamist ja kaitsemeetmeid
+          kirjeldab punkt 3.3.
+        </p>
+        <p>
           Ka mõni kliendiga kokku lepitud pilve-, video- või AI-teenuse pakkuja
           võib töödelda andmeid väljaspool Euroopa Majanduspiirkonda. Kasutame
           sellist teenust isikuandmete jaoks ainult siis, kui edastamiseks on
@@ -359,6 +377,11 @@
             privaatsusavaldus. OÜ Adagio käsutusse jõudnud konkreetse
             turvaintsidendi andmeid säilitame intsidendi lahendamise ja
             võimalike õigusnõuete kaitsmise lõpuni.
+          </li>
+          <li>
+            <strong>Veebianalüütika:</strong> kuni 2 kuud kasutaja- ja
+            sündmusetasandi andmete puhul; koondstatistika ja küpsiste kohta
+            vt punkt 3.2.
           </li>
           <li>
             <strong>Andmekaitsealased taotlused:</strong> taotluse lahendamiseks
@@ -428,8 +451,8 @@
         <p>
           OÜ Adagio ei tee sinu kohta otsuseid, mis põhinevad üksnes
           automatiseeritud töötlemisel ja toovad sulle kaasa õiguslikke või
-          samaväärselt olulisi tagajärgi. Me ei koosta veebikülastajate
-          profiile.
+          samaväärselt olulisi tagajärgi. Me ei kasuta veebianalüütikat külastajate reklaamiprofiilide
+          koostamiseks ega automatiseeritud individuaalsete otsuste tegemiseks.
         </p>
 
         <h2>10. Turvalisus</h2>

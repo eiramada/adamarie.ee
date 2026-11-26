@@ -70,8 +70,11 @@ Custom domain (`adamarie.ee`) via the `CNAME` file + DNS records at the registra
 
 ## GA4 and analytics consent
 
-Before merging/deploying this change:
-- Set the actual GA4 web stream Measurement ID in `analytics-consent.js` (empty means analytics and the banner remain disabled). Only the production hostnames load GA4.
-- In GA4 Admin, verify the Google tag has no Ads destinations or Ads links, disable Google Signals and enhanced measurement events that are not needed, disable unnecessary granular data, and select 2 months of event/user data retention. Confirm Google's data processing terms and applicable transfer safeguards. Update privacy section 3 with the verified retention setting and the policy effective date before going live.
-- Test in a clean browser on the production hostname: no Google Analytics or Tag Manager requests or GA cookies before a choice or after rejection; accept and verify a GA4 page_view in Realtime; reload and navigate between all three pages; reopen settings and reject to verify cookies are removed and tracking stays off after reload and in other tabs. Check mobile layout, keyboard focus and storage-disabled behavior.
-- Consent uses basic Consent Mode v2; the Google tag is injected only after a stored grant. Consent and GA cookies have a configured lifetime of 180 days. Local previews intentionally do not send data.
+GA4 uses basic Consent Mode v2 and loads only after a saved analytics grant, on HTTPS production hostnames only. Local previews show the consent UI without sending data to Google. Consent and GA cookies have a maximum lifetime of 60 days, without automatic cookie renewal. Advertising consent is always denied.
+
+Keep enhanced measurement, Google Signals, user-provided data, ads personalization, granular location/device data and optional account sharing off; do not link Ads. User and event data retention: 2 months, reset on new activity off. Confirm account settings and data processing terms before deployment.
+
+Before merging:
+- Run `node scripts/check-site.mjs` and `node scripts/check-analytics-consent.mjs`.
+- In a clean browser, test all three pages, consent and withdrawal, expiry, cookie deletion, multiple tabs, keyboard/mobile layout, storage errors and network requests. Before deployment, intercept Google requests rather than transmit test data. After approved deployment, verify an opted-in page_view in GA4 Realtime.
+- Check the privacy policy effective date against the actual publication date.
